@@ -327,7 +327,7 @@ def call_variants(examples_filename,
                    gpu_options=tf.GPUOptions(
                        per_process_gpu_memory_fraction=float(FLAGS.per_process_gpu_memory_fraction / 100))) \
       if FLAGS.enable_configurable_gpu else tf.ConfigProto(device_count=device_count)
-  with tf.Session(config=config) as sess:
+  with tf.Session(config=tf.ConfigProto(device_count=device_count)) as sess:
     sess.run(init_op)
     if execution_hardware == 'accelerator':
       if not any(dev.device_type != 'CPU' for dev in sess.list_devices()):
@@ -345,6 +345,7 @@ def call_variants(examples_filename,
       batch_size=batch_size,
       master=master,
       use_tpu=use_tpu,
+      session_config=config,
   )
 
   # Instantiate the prediction "stream", and select the EMA values from

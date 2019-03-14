@@ -366,7 +366,8 @@ class DeepVariantModel(object):
                      unused_device_fn=None,
                      master='',
                      use_tpu=False,
-                     start_from_checkpoint=None):
+                     start_from_checkpoint=None,
+                     session_config=None):
     """Returns a new tf.estimator.Estimator object for training or prediction.
 
     The estimator needs to know batch_size. We use the same value for all
@@ -445,6 +446,7 @@ class DeepVariantModel(object):
           save_checkpoints_secs=save_checkpoints_secs,
           save_checkpoints_steps=save_checkpoints_steps,
           save_summary_steps=FLAGS.save_summary_steps,
+          session_config=session_config,
       )
       # The TPUEstimator interface implicitly adds batch_size to the params
       # dict. Do so explicitly here, so that we can use the same model_fn.
